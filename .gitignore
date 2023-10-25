@@ -1,3 +1,6 @@
+# ignore `ignore` folder which is used for random things
+ignore/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
