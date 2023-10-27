@@ -27,6 +27,10 @@ test:  ## unittest を実行しカバレッジを計測する
 	@coverage run -m unittest discover
 	@coverage xml
 
+.PHONY: report
+report: ## カバレッジのレポートを表示する
+	@coverage report -m
+
 .PHONY: check
 check:  ## format と lint と test を全て実行する
 	@make format
