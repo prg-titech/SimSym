@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='simsym',
+    name='SimSym',
     version='0.0.1',
     description='Environment which can be used to teach physics to high school students',
     author='Kosuke Kiuchi',

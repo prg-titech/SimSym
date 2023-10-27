@@ -1,6 +1,9 @@
 # ignore `ignore` folder which is used for random things
 ignore/
 
+# ignore vscode settings
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
