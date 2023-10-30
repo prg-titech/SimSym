@@ -39,7 +39,7 @@ class ExprWithUnit:
 
   def __str__(self) -> str:
     if isinstance(self.pq, PhysicalQuantity):
-      return f'{str(nsimplify(self.expr))} {str(self.pq.unit)}'
+      return f'{str(nsimplify(self.expr))} [{str(self.pq.unit)}]'
     else:
       return f'{str(nsimplify(self.expr))} [1]'
 
@@ -65,7 +65,7 @@ class ExprWithUnit:
   def __sub__(self, other: ExprWithUnit) -> ExprWithUnit:
     return ExprWithUnit(self.expr - other.expr, self.pq - other.pq)
 
-  def __mul__(self, other: ExprWithUnit | Any) -> ExprWithUnit:
+  def __mul__(self, other: Any) -> ExprWithUnit:
     if isinstance(other, ExprWithUnit):
       return ExprWithUnit(self.expr * other.expr, self.pq * other.pq)
     else:
@@ -74,9 +74,11 @@ class ExprWithUnit:
   def __rmul__(self, other: Any) -> ExprWithUnit:
     return ExprWithUnit(self.expr * other, self.pq)
 
-  # TODO: ExprWithUnit 以外も実装
-  def __truediv__(self, other: ExprWithUnit) -> ExprWithUnit:
-    return ExprWithUnit(self.expr / other.expr, self.pq / other.pq)
+  def __truediv__(self, other: Any) -> ExprWithUnit:
+    if isinstance(other, ExprWithUnit):
+      return ExprWithUnit(self.expr / other.expr, self.pq / other.pq)
+    else:
+      return ExprWithUnit(self.expr / other, self.pq)
 
   def __pow__(self, other: Any) -> ExprWithUnit:
     return ExprWithUnit(self.expr ** other, self.pq ** other)

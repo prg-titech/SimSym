@@ -37,12 +37,6 @@ check:  ## format と lint と test を全て実行する
 	@make lint
 	@make test
 
-.PHONY: commit
-commit:
-	@make check
-	@git add .
-	@git commit
-
 help: ## ヘルプを表示する
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
