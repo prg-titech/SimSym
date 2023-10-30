@@ -59,15 +59,33 @@ class ExprWithUnit:
         ']}$',
     ])
 
+  def convert_to_base(self) -> ExprWithUnit:
+    if isinstance(self.pq, PhysicalQuantity):
+      factor = self.pq.base.value
+      base_unit = self.pq.base.unit
+      return ExprWithUnit(factor * self.expr, PhysicalQuantity(1, str(base_unit)))
+    else:
+      return self
+
+  def __eq__(self, other: object) -> bool:
+    if isinstance(other, ExprWithUnit):
+      return str(self) == str(other)
+    else:
+      return False
+
   def __add__(self, other: ExprWithUnit) -> ExprWithUnit:
-    return ExprWithUnit(self.expr + other.expr, self.pq + other.pq)
+    factor = other.factor_to(self)
+    return ExprWithUnit(self.expr + other.expr * factor, self.pq)
 
   def __sub__(self, other: ExprWithUnit) -> ExprWithUnit:
-    return ExprWithUnit(self.expr - other.expr, self.pq - other.pq)
+    factor = other.factor_to(self)
+    return ExprWithUnit(self.expr - other.expr * factor, self.pq)
 
   def __mul__(self, other: Any) -> ExprWithUnit:
     if isinstance(other, ExprWithUnit):
-      return ExprWithUnit(self.expr * other.expr, self.pq * other.pq)
+      s = self.convert_to_base()
+      o = other.convert_to_base()
+      return ExprWithUnit(s.expr * o.expr, s.pq * o.pq)
     else:
       return ExprWithUnit(self.expr * other, self.pq)
 
@@ -76,9 +94,18 @@ class ExprWithUnit:
 
   def __truediv__(self, other: Any) -> ExprWithUnit:
     if isinstance(other, ExprWithUnit):
-      return ExprWithUnit(self.expr / other.expr, self.pq / other.pq)
+      s = self.convert_to_base()
+      o = other.convert_to_base()
+      return ExprWithUnit(s.expr / o.expr, s.pq / o.pq)
     else:
       return ExprWithUnit(self.expr / other, self.pq)
 
   def __pow__(self, other: Any) -> ExprWithUnit:
     return ExprWithUnit(self.expr ** other, self.pq ** other)
+
+  def factor_to(self, other: ExprWithUnit) -> float:
+    self.pq + other.pq  # for unit checking
+    if isinstance(self.pq, PhysicalQuantity):
+      return self.pq.unit.conversion_factor_to(other.pq.unit)  # type: ignore
+    else:
+      return 1
