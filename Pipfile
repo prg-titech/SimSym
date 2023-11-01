@@ -7,6 +7,7 @@ name = "pypi"
 physicalquantities = "*"
 sympy = "*"
 jupyter = "*"
+ipywidgets = "*"
 
 [dev-packages]
 flake8 = "*"
