@@ -18,11 +18,20 @@ class Obj:
     else:
       return False
 
+  def add_variable(self, variable: ExprWithUnit) -> None:
+    if variable in self.variables.values():
+      raise ValueError(f'Variable {variable} already exists.')
+    self.variables[str(variable)] = variable
+
 
 def generate_init_variables(name: str) -> dict[str, ExprWithUnit]:
   variables: dict[str, ExprWithUnit] = {}
-  variables[f'x_{name}'] = ExprWithUnit(f'x_{name}', 'm')
-  variables[f'y_{name}'] = ExprWithUnit(f'y_{name}', 'm')
-  variables[f'v_{{{name}x}}'] = ExprWithUnit(f'v_{{{name}x}}', 'm/s')
-  variables[f'v_{{{name}y}}'] = ExprWithUnit(f'v_{{{name}y}}', 'm/s')
+  x = ExprWithUnit(f'x_{name}', 'm')
+  variables[str(x)] = x
+  y = ExprWithUnit(f'y_{name}', 'm')
+  variables[str(y)] = y
+  v_x = ExprWithUnit(f'v_{{{name}x}}', 'm/s')
+  variables[str(v_x)] = v_x
+  v_y = ExprWithUnit(f'v_{{{name}y}}', 'm/s')
+  variables[str(v_y)] = v_y
   return variables

@@ -27,15 +27,45 @@ test:  ## unittest を実行しカバレッジを計測する
 	@coverage run -m unittest discover
 	@coverage xml
 
-.PHONY: report
-report: ## カバレッジのレポートを表示する
-	@coverage report -m
+.PHONY: coverage
+coverage: ## カバレッジのレポートを表示する
+	@coverage report -m | grep -v '100%' | grep -v 'TOTAL'
+	@coverage report -m | grep 'TOTAL'
 
 .PHONY: check
 check:  ## format と lint と test を全て実行する
 	@make format
 	@make lint
 	@make test
+
+.PHONY: status-main
+status-main:
+	@echo "[本体]"
+	@echo "ファイル数: $$(find SimSym -name '*.py' | wc -l | awk '{print $$1}')"
+	@echo "総行数    : $$(find SimSym -name '*.py' | xargs wc -l | grep total | awk '{print $$1}')"
+	@echo "総文字数  : $$(find SimSym -name '*.py' | xargs wc -m | grep total | awk '{print $$1}')"
+	@echo "カバレッジ: $$(make coverage | grep 'TOTAL' | awk '{print $$4}')"
+
+.PHONY: status-test
+status-test:
+	@echo "[テスト]"
+	@echo "ファイル数: $$(find test -name '*.py' | wc -l | awk '{print $$1}')"
+	@echo "総行数    : $$(find test -name '*.py' | xargs wc -l | grep total | awk '{print $$1}')"
+	@echo "総文字数  : $$(find test -name '*.py' | xargs wc -m | grep total | awk '{print $$1}')"
+
+.PHONY: status-all
+status-all:
+	@echo "[合計]"
+	@echo "ファイル数: $$(find SimSym test -name '*.py' | wc -l | awk '{print $$1}')"
+	@echo "総行数    : $$(find SimSym test -name '*.py' | xargs wc -l | grep total | awk '{print $$1}')"
+	@echo "総文字数  : $$(find SimSym test -name '*.py' | xargs wc -m | grep total | awk '{print $$1}')"
+	@echo "カバレッジ: $$(make coverage | grep 'TOTAL' | awk '{print $$4}')"
+
+.PHONY: status
+status: ## プロジェクトの情報を表示する
+	@make status-main
+	@make status-test
+	@make status-all
 
 help: ## ヘルプを表示する
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \

@@ -3,10 +3,11 @@ from __future__ import annotations
 from typing import Any
 
 from PhysicalQuantities.quantity import PhysicalQuantity
-from PhysicalQuantities.unit import PhysicalUnit
+from PhysicalQuantities.unit import PhysicalUnit, UnitError
 from sympy import Symbol, latex
-from sympy import nsimplify as _nsimplify
 from sympy.core.expr import Expr
+
+from ..utility import nsimplify
 
 
 # PhysicalUnit の _repr_latex_ を上書きする
@@ -49,11 +50,57 @@ def _repr_latex_(self: PhysicalUnit) -> str:
 PhysicalUnit._repr_latex_ = _repr_latex_
 
 
-def nsimplify(expr: Expr) -> Expr:
-  """
-  Simplify a sympy expression.
-  """
-  return _nsimplify(expr)  # type: ignore
+class PQ:
+  pq: PhysicalQuantity | float
+
+  def __init__(self, pq: PQ | PhysicalQuantity | str | float):
+    if isinstance(pq, PQ):
+      self.pq = pq.pq
+    elif isinstance(pq, PhysicalQuantity):
+      self.pq = pq
+    elif isinstance(pq, str):
+      try:
+        self.pq = PhysicalQuantity(1, pq)
+      except UnitError as e:
+        raise e
+    else:
+      self.pq = 1
+
+  def __str__(self) -> str:
+    if isinstance(self.pq, PhysicalQuantity):
+      return f'[{str(self.pq.unit)}]'
+    else:
+      return '[1]'
+
+  def __repr__(self) -> str:
+    if isinstance(self.pq, PhysicalQuantity):
+      return f'PQ({str(self.pq.unit)})'
+    else:
+      return 'PQ(1)'
+
+  def _repr_latex_(self) -> str:
+    if isinstance(self.pq, PhysicalQuantity):
+      return f'[{self.pq.unit._repr_latex_()}]'
+    else:
+      return '[1]'
+
+  def __add__(self, other: PQ) -> PQ:
+    return PQ(self.pq + other.pq)
+
+  def __mul__(self, other: Any) -> PQ:
+    if isinstance(other, PQ):
+      return PQ(self.pq * other.pq)
+    else:
+      return PQ(self.pq * other)
+
+  def __truediv__(self, other: Any) -> PQ:
+    if isinstance(other, PQ):
+      return PQ(self.pq / other.pq)
+    else:
+      return PQ(self.pq / other)
+
+  def __pow__(self, other: Any) -> PQ:
+    return PQ(self.pq.__pow__(other))
 
 
 class ExprWithUnit:
@@ -61,48 +108,32 @@ class ExprWithUnit:
   Expr with a unit.
   """
   expr: Expr
-  pq: PhysicalQuantity | float
+  pq: PQ
 
-  def __init__(self, expr: Expr | str, pq: PhysicalQuantity | str) -> None:
+  def __init__(self, expr: Expr | str, pq: PQ | str | float) -> None:
     if isinstance(expr, str):
       self.expr = Symbol(expr)  # type: ignore
     else:
       self.expr = expr
 
-    if isinstance(pq, str):
-      try:
-        self.pq = PhysicalQuantity(1, pq)
-      except KeyError as e:
-        raise e
-    else:
-      self.pq = pq
+    self.pq = PQ(pq)
 
   def __str__(self) -> str:
-    if isinstance(self.pq, PhysicalQuantity):
-      return f'{str(nsimplify(self.expr))} [{str(self.pq.unit)}]'
-    else:
-      return f'{str(nsimplify(self.expr))} [1]'
+    return f'{str(nsimplify(self.expr))} {str(self.pq)}'
 
   def __repr__(self) -> str:
-    return self.__str__()
+    return f'ExprWithUnit({str(nsimplify(self.expr))}, {repr(self.pq)})'
 
   def _repr_latex_(self) -> str:
     """
     Return latex representation for IPython notebook
     """
-    unit_repr = self.pq.unit._repr_latex_() if isinstance(self.pq, PhysicalQuantity) else '1'
-    return ''.join([
-        '$',
-        latex(nsimplify(self.expr)),
-        r'~\mathrm{[',
-        unit_repr,
-        ']}$',
-    ])
+    return latex(nsimplify(self.expr)) + '~' + self.pq._repr_latex_()  # type: ignore
 
   def convert_to_base(self) -> ExprWithUnit:
-    if isinstance(self.pq, PhysicalQuantity):
-      factor = self.pq.base.value
-      base_unit = self.pq.base.unit
+    if isinstance(self.pq.pq, PhysicalQuantity):
+      factor = self.pq.pq.base.value
+      base_unit = self.pq.pq.base.unit
       return ExprWithUnit(factor * self.expr, PhysicalQuantity(1, str(base_unit)))
     else:
       return self
@@ -144,8 +175,8 @@ class ExprWithUnit:
     return ExprWithUnit(self.expr ** other, self.pq ** other)
 
   def factor_to(self, other: ExprWithUnit) -> float:
-    self.pq + other.pq  # for unit checking
-    if isinstance(self.pq, PhysicalQuantity):
-      return self.pq.unit.conversion_factor_to(other.pq.unit)  # type: ignore
+    self.pq + other.pq
+    if isinstance(self.pq.pq, PhysicalQuantity):
+      return self.pq.pq.unit.conversion_factor_to(other.pq.pq.unit)  # type: ignore
     else:
       return 1

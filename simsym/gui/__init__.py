@@ -2,6 +2,7 @@ from IPython.display import display
 from ipywidgets import HTML
 
 from .definePane import DefinePane
+from .equationWidget import EquationWidget
 from .globalVarWidget import GlobalVarWidget
 from .objGenerateWidget import ObjGenerateWidget
 from .objVarWidget import ObjVarWidget
@@ -29,4 +30,5 @@ __all__ = [
     'ObjGenerateWidget',
     'ObjVarWidget',
     'GlobalVarWidget',
+    'EquationWidget'
 ]

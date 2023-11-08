@@ -2,19 +2,24 @@ from typing import Any
 
 from ipywidgets import HBox, HTMLMath, Layout, Tab
 
-from SimSym.model import Obj
+from ..model import Obj
+from ..unit import ExprWithUnit
 
 
 class ObjVarShowWidget(HBox):  # type: ignore
-  variables: tuple[HTMLMath, ...]
+  obj: Obj
 
   def __init__(self, obj: Obj, **kwargs: dict[str, Any]):
+    self.obj = obj
     variables: list[HTMLMath] = []
     for variable in obj.variables.values():
-      variables.append(HTMLMath(variable._repr_latex_()))
-    self.variables = tuple(variables)
-    super().__init__(self.variables, **kwargs)
+      variables.append(HTMLMath(f'${variable._repr_latex_()}$'))
+    super().__init__(variables, **kwargs)
     self.add_class('flexgrid')
+
+  def add(self, variable: ExprWithUnit) -> None:
+    self.obj.add_variable(variable)
+    self.children += (HTMLMath(f'${variable._repr_latex_()}$'),)
 
 
 class ObjVarWidget(Tab):  # type: ignore
@@ -31,5 +36,5 @@ class ObjVarWidget(Tab):  # type: ignore
       raise ValueError(f'Object {obj.name} already exists.')
     self.objs.append(obj)
     tab = ObjVarShowWidget(obj, layout=Layout(width='100%'))
-    self.children = (*self.children, tab)
-    self.set_title(len(self.children)-1, obj.name)
+    self.children += (tab,)
+    self.set_title(len(self.children) - 1, obj.name)

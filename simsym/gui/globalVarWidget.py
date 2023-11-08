@@ -6,15 +6,15 @@ from ..unit import ExprWithUnit
 
 
 class GlobalVarShowWidget(HBox):  # type: ignore
-  variables: tuple[HTMLMath, ...]
-
   def __init__(self, vars: list[ExprWithUnit], **kwargs: dict[str, Any]):
     variables: list[HTMLMath] = []
     for variable in vars:
-      variables.append(HTMLMath(value=variable._repr_latex_()))
-    self.variables = tuple(variables)
-    super().__init__(self.variables, **kwargs)
+      variables.append(HTMLMath(f'${variable._repr_latex_()}$'))
+    super().__init__(tuple(variables), **kwargs)
     self.add_class('flexgrid')
+
+  def add(self, expr: ExprWithUnit) -> None:
+    self.children += (HTMLMath(f'${expr._repr_latex_()}$'),)
 
 
 class GlobalVarWidget(Tab):  # type: ignore
@@ -28,3 +28,9 @@ class GlobalVarWidget(Tab):  # type: ignore
     self.child = GlobalVarShowWidget(self.vars, layout=Layout(width='100%'))
     super().__init__([self.child], layout=Layout(width='95%'), **kwargs)
     self.set_title(0, '変数')
+
+  def add(self, expr: ExprWithUnit) -> None:
+    if expr in self.vars:
+      raise ValueError(f'Variable {expr} already exists.')
+    self.vars.append(expr)
+    self.child.add(expr)
