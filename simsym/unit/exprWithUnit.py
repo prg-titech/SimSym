@@ -2,11 +2,51 @@ from __future__ import annotations
 
 from typing import Any
 
-from PhysicalQuantities import q
 from PhysicalQuantities.quantity import PhysicalQuantity
+from PhysicalQuantities.unit import PhysicalUnit
 from sympy import Symbol, latex
 from sympy import nsimplify as _nsimplify
 from sympy.core.expr import Expr
+
+
+# PhysicalUnit の _repr_latex_ を上書きする
+def _repr_latex_(self: PhysicalUnit) -> str:
+  """ Return LaTeX representation for IPython notebook
+
+  Returns
+  -------
+  str
+      Unit as LaTeX string
+  """
+  num = ''
+  denom = ''
+  for unit in self.names.keys():
+    power = self.names[unit]
+    if power < 0:
+      if denom == '':
+        denom = '\\text{' + unit + '}'
+      else:
+        denom = denom + '\\cdot \\text{' + unit + '}'
+      if power < -1:
+        denom = denom + '^' + str(-power)
+    elif power > 0:
+      if num == '':
+        num = '\\text{' + unit + '}'
+      else:
+        num = num + '\\cdot \\text{' + unit + '}'
+      if power > 1:
+        num = num + '^{' + str(power) + '}'
+  if num == '':
+    num = '1'
+  if denom != '':
+    name = num + '/' + denom
+  else:
+    name = num
+  name = name.replace('\\text{deg}', '\\,^{\\circ}').replace(' pi', ' \\pi ')
+  return name
+
+
+PhysicalUnit._repr_latex_ = _repr_latex_
 
 
 def nsimplify(expr: Expr) -> Expr:
@@ -31,7 +71,7 @@ class ExprWithUnit:
 
     if isinstance(pq, str):
       try:
-        self.pq = q[pq]
+        self.pq = PhysicalQuantity(1, pq)
       except KeyError as e:
         raise e
     else:

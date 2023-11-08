@@ -1,5 +1,7 @@
 import unittest
 
+from PhysicalQuantities.unit import UnitError
+
 from SimSym import ExprWithUnit
 
 
@@ -20,7 +22,7 @@ class TestExprWithUnit(unittest.TestCase):
     self.assertEqual(c._repr_latex_(), '$a + b~\\mathrm{[\\text{m}]}$')
 
   def test_unit_key_error(self) -> None:
-    with self.assertRaises(KeyError):
+    with self.assertRaises(UnitError):
       ExprWithUnit('a', 'meters')
 
   def test_sub(self) -> None:

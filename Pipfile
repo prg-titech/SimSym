@@ -6,8 +6,22 @@ name = "pypi"
 [packages]
 physicalquantities = "*"
 sympy = "*"
-jupyter = "*"
-ipywidgets = "*"
+## -----------------------
+# jupyter = "*"
+# ipywidgets = "*"
+## -----------------------
+## ipywidgets で latex が正常に typeset されないので明示的にバージョンを指定
+jupyter = "1.0.0"
+jupyter-client = "7.1.0"
+jupyter-console = "6.4.0"
+jupyter-core = "4.9.1"
+jupyter-server = "1.13.1"
+jupyterlab = "3.2.5"
+jupyterlab-pygments = "0.1.2"
+jupyterlab-server = "2.10.2"
+jupyterlab-widgets = "1.0.2"
+ipywidgets = "7.6.5"
+## -----------------------
 
 [dev-packages]
 flake8 = "*"

@@ -1,7 +1,7 @@
-from ipywidgets import HBox, Text, Layout, Button
+from ipywidgets import Button, HBox, Layout, Text
 
 
-class ObjectGenerateWidget(HBox):  # type: ignore
+class ObjGenerateWidget(HBox):  # type: ignore
   def __init__(self) -> None:
     text_input = Text(placeholder='名前を入力', layout=Layout(width='90px'))
     self.text_input = text_input
