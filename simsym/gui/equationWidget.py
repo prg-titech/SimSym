@@ -1,6 +1,6 @@
 from typing import Any
 
-from ipywidgets import VBox, HTMLMath, Layout, Tab
+from ipywidgets import HTMLMath, Layout, Tab, VBox
 
 from ..unit import EqWithUnit
 
