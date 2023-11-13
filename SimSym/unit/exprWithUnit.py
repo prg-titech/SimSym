@@ -121,6 +121,10 @@ class ExprWithUnit:
   def __str__(self) -> str:
     return f'{str(nsimplify(self.expr))} {str(self.pq)}'
 
+  @property
+  def to_key(self) -> str:
+    return str(nsimplify(self.expr))
+
   def __repr__(self) -> str:
     return f'ExprWithUnit({str(nsimplify(self.expr))}, {repr(self.pq)})'
 

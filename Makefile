@@ -32,11 +32,23 @@ coverage: ## カバレッジのレポートを表示する
 	@coverage report -m | grep -v '100%' | grep -v 'TOTAL'
 	@coverage report -m | grep 'TOTAL'
 
+.PHONY: testc
+testc:	## unittest を実行し、カバレッジを表示する
+	@make test
+	@make coverage
+
 .PHONY: check
 check:  ## format と lint と test を全て実行する
 	@make format
 	@make lint
 	@make test
+
+.PHONY: checkc
+checkc:  ## format と lint と test を全て実行し、カバレッジを表示する
+	@make format
+	@make lint
+	@make test
+	@make coverage
 
 .PHONY: status-main
 status-main:
