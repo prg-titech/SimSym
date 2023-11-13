@@ -5,14 +5,14 @@ from .variableHolder import VariableHolder
 class Obj:
   name: str
   variables: dict[str, ExprWithUnit]
-  variableHolder: VariableHolder
+  variable_holder: VariableHolder
 
-  def __init__(self, name: str, variableHolder: VariableHolder) -> None:
+  def __init__(self, name: str, variable_holder: VariableHolder) -> None:
     self.name = name
-    self.variableHolder = variableHolder
+    self.variable_holder = variable_holder
     self.variables = generate_init_variables(name)
     for variable in self.variables.values():
-      self.variableHolder.add(variable)
+      self.variable_holder.add(variable)
 
   def __repr__(self) -> str:
     return f'Obj({self.name})'
@@ -24,7 +24,7 @@ class Obj:
       return False
 
   def add_variable(self, variable: ExprWithUnit) -> None:
-    self.variableHolder.add(variable)
+    self.variable_holder.add(variable)
     self.variables[str(variable)] = variable
 
 

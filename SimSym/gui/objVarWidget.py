@@ -26,11 +26,11 @@ class ObjVarShowWidget(HBox):  # type: ignore
 
 class ObjVarWidget(Tab):  # type: ignore
   objs: dict[str, Obj]
-  variableHolder: VariableHolder
+  variable_holder: VariableHolder
   children: tuple[ObjVarShowWidget, ...]
 
-  def __init__(self, variableHolder: VariableHolder, **kwargs: dict[str, Any]) -> None:
-    self.variableHolder = variableHolder
+  def __init__(self, variable_holder: VariableHolder, **kwargs: dict[str, Any]) -> None:
+    self.variable_holder = variable_holder
     self.objs = {}
     self.children = tuple()
     super().__init__(self.children, layout=Layout(width='95%'), **kwargs)
@@ -44,4 +44,4 @@ class ObjVarWidget(Tab):  # type: ignore
   def add_object_by_name(self, name: str) -> None:
     if name in self.objs.keys():
       alert_exception(ObjAlreadyDefinedException(name))
-    self.add_object(Obj(name, self.variableHolder))
+    self.add_object(Obj(name, self.variable_holder))

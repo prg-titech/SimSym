@@ -18,11 +18,11 @@ class GlobalVarShowWidget(HBox):  # type: ignore
 
 class GlobalVarWidget(Tab):  # type: ignore
   vars: list[ExprWithUnit]
-  variableHolder: VariableHolder
+  variable_holder: VariableHolder
   child: GlobalVarShowWidget
 
-  def __init__(self, variableHolder: VariableHolder, **kwargs: dict[str, Any]) -> None:
-    self.variableHolder = variableHolder
+  def __init__(self, variable_holder: VariableHolder, **kwargs: dict[str, Any]) -> None:
+    self.variable_holder = variable_holder
     self.vars = []
     self.child = GlobalVarShowWidget(self.vars, layout=Layout(width='100%'))
     super().__init__([self.child], layout=Layout(width='95%'), **kwargs)
@@ -32,6 +32,6 @@ class GlobalVarWidget(Tab):  # type: ignore
     self.add(ExprWithUnit('g', 'm/s/s'))
 
   def add(self, expr: ExprWithUnit) -> None:
-    self.variableHolder.add(expr)
+    self.variable_holder.add(expr)
     self.vars.append(expr)
     self.child.add(expr)

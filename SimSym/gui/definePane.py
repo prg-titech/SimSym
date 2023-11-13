@@ -8,8 +8,8 @@ from .objVarWidget import ObjVarWidget
 
 
 class DefinePane(Tab):  # type: ignore
-  variableHolder: VariableHolder
-  equationHolder: EquationHolder
+  variable_holder: VariableHolder
+  equation_holder: EquationHolder
   obj_generate_widget: ObjGenerateWidget
   obj_var_widget: ObjVarWidget
   global_var_widget: GlobalVarWidget
@@ -21,15 +21,15 @@ class DefinePane(Tab):  # type: ignore
       obj_var_widget: ObjVarWidget | None = None,
       global_var_widget: GlobalVarWidget | None = None,
       equation_widget: EquationWidget | None = None,
-      variableHolder: VariableHolder | None = None,
-      equationHolder: EquationHolder | None = None,
+      variable_holder: VariableHolder | None = None,
+      equation_holder: EquationHolder | None = None,
   ) -> None:
-    self.variableHolder = variableHolder or VariableHolder()
-    self.equationHolder = equationHolder or EquationHolder()
+    self.variable_holder = variable_holder or VariableHolder()
+    self.equation_holder = equation_holder or EquationHolder()
     self.obj_generate_widget = obj_generate_widget or ObjGenerateWidget()
-    self.obj_var_widget = obj_var_widget or ObjVarWidget(self.variableHolder)
-    self.global_var_widget = global_var_widget or GlobalVarWidget(self.variableHolder)
-    self.equation_widget = equation_widget or EquationWidget(self.equationHolder)
+    self.obj_var_widget = obj_var_widget or ObjVarWidget(self.variable_holder)
+    self.global_var_widget = global_var_widget or GlobalVarWidget(self.variable_holder)
+    self.equation_widget = equation_widget or EquationWidget(self.equation_holder)
 
     super().__init__(
         children=[VBox([
