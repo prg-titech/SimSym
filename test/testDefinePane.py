@@ -1,6 +1,6 @@
 import unittest
 
-from SimSym.exception import (ObjAlreadyDefinedException,
+from SimSym.exception import (EmptyException, ObjAlreadyDefinedException,
                               VarAlreadyDefinedException)
 from SimSym.gui import (DefinePane, EquationWidget, GlobalVarWidget,
                         ObjGenerateWidget, ObjVarWidget)
@@ -26,6 +26,14 @@ class TestDefinePane(unittest.TestCase):
     obj_var_widget.add_object_by_name('B')
     with self.assertRaises(ObjAlreadyDefinedException):
       obj_var_widget.add_object_by_name('B')
+
+    obj_generate_widget.text_input.value = 'C'
+    obj_generate_widget.button.click()
+    with self.assertRaises(ObjAlreadyDefinedException):
+      obj_var_widget.add_object_by_name('C')
+
+    with self.assertRaises(EmptyException):
+      obj_var_widget.add_object_by_name('')
 
     obj_var_widget.children[0].add(ExprWithUnit('a_A', 'm/s^2'))
     with self.assertRaises(VarAlreadyDefinedException):

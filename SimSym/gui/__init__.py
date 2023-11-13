@@ -30,5 +30,6 @@ __all__ = [
     'ObjGenerateWidget',
     'ObjVarWidget',
     'GlobalVarWidget',
-    'EquationWidget'
+    'EquationWidget',
+    'VariableHolder',
 ]

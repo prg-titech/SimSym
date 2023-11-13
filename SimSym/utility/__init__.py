@@ -1,4 +1,4 @@
-from .alert import alert, alert_exception
+from .alert import AlertOutput, alert, alert_exception
 from .nsimplify import nsimplify
 
 __all__ = [
@@ -6,3 +6,7 @@ __all__ = [
     'alert',
     'alert_exception',
 ]
+
+from IPython.display import display
+
+display(AlertOutput().out)  # type: ignore

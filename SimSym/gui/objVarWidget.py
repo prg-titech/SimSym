@@ -2,7 +2,7 @@ from typing import Any
 
 from ipywidgets import HBox, HTMLMath, Layout, Tab
 
-from ..exception import ObjAlreadyDefinedException
+from ..exception import EmptyException, ObjAlreadyDefinedException
 from ..model import Obj, VariableHolder
 from ..unit import ExprWithUnit
 from ..utility import alert_exception
@@ -42,6 +42,8 @@ class ObjVarWidget(Tab):  # type: ignore
     self.set_title(len(self.children) - 1, obj.name)
 
   def add_object_by_name(self, name: str) -> None:
+    if name == '':
+      alert_exception(EmptyException('物体名'))
     if name in self.objs.keys():
       alert_exception(ObjAlreadyDefinedException(name))
     self.add_object(Obj(name, self.variable_holder))
