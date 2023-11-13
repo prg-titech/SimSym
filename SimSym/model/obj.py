@@ -1,13 +1,18 @@
-from SimSym.unit import ExprWithUnit
+from ..unit import ExprWithUnit
+from .variableHolder import VariableHolder
 
 
 class Obj:
   name: str
   variables: dict[str, ExprWithUnit]
+  variableHolder: VariableHolder
 
-  def __init__(self, name: str) -> None:
+  def __init__(self, name: str, variableHolder: VariableHolder) -> None:
     self.name = name
+    self.variableHolder = variableHolder
     self.variables = generate_init_variables(name)
+    for variable in self.variables.values():
+      self.variableHolder.add(variable)
 
   def __repr__(self) -> str:
     return f'Obj({self.name})'
@@ -19,8 +24,7 @@ class Obj:
       return False
 
   def add_variable(self, variable: ExprWithUnit) -> None:
-    if variable in self.variables.values():
-      raise ValueError(f'Variable {variable} already exists.')
+    self.variableHolder.add(variable)
     self.variables[str(variable)] = variable
 
 

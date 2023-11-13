@@ -1,6 +1,7 @@
 import unittest
 
 from SimSym import ExprWithUnit
+from SimSym.exception import VarAlreadyDefinedException, VarNotDefinedException
 from SimSym.model import VariableHolder
 
 
@@ -10,7 +11,7 @@ class TestVariableHolder(unittest.TestCase):
     x = ExprWithUnit('x', 'm')
     vh.add(x)
     self.assertEqual(vh.variables[x.to_key], x)
-    with self.assertRaises(ValueError):
+    with self.assertRaises(VarAlreadyDefinedException):
       vh.add(x)
 
   def test_get(self) -> None:
@@ -18,5 +19,5 @@ class TestVariableHolder(unittest.TestCase):
     x = ExprWithUnit('x', 'm')
     vh.add(x)
     self.assertEqual(vh.get('x'), x)
-    with self.assertRaises(ValueError):
+    with self.assertRaises(VarNotDefinedException):
       vh.get('y')

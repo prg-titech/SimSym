@@ -2,14 +2,13 @@ from typing import Any
 
 from ipywidgets import HBox, HTMLMath, Layout, Tab
 
+from ..model import VariableHolder
 from ..unit import ExprWithUnit
 
 
 class GlobalVarShowWidget(HBox):  # type: ignore
   def __init__(self, vars: list[ExprWithUnit], **kwargs: dict[str, Any]):
     variables: list[HTMLMath] = []
-    for variable in vars:
-      variables.append(HTMLMath(f'${variable._repr_latex_()}$'))
     super().__init__(tuple(variables), **kwargs)
     self.add_class('flexgrid')
 
@@ -19,18 +18,20 @@ class GlobalVarShowWidget(HBox):  # type: ignore
 
 class GlobalVarWidget(Tab):  # type: ignore
   vars: list[ExprWithUnit]
+  variableHolder: VariableHolder
   child: GlobalVarShowWidget
 
-  def __init__(self, **kwargs: dict[str, Any]) -> None:
+  def __init__(self, variableHolder: VariableHolder, **kwargs: dict[str, Any]) -> None:
+    self.variableHolder = variableHolder
     self.vars = []
-    self.vars.append(ExprWithUnit('t', 's'))
-    self.vars.append(ExprWithUnit('g', 'm/s/s'))
     self.child = GlobalVarShowWidget(self.vars, layout=Layout(width='100%'))
     super().__init__([self.child], layout=Layout(width='95%'), **kwargs)
     self.set_title(0, '変数')
 
+    self.add(ExprWithUnit('t', 's'))
+    self.add(ExprWithUnit('g', 'm/s/s'))
+
   def add(self, expr: ExprWithUnit) -> None:
-    if expr in self.vars:
-      raise ValueError(f'Variable {expr} already exists.')
+    self.variableHolder.add(expr)
     self.vars.append(expr)
     self.child.add(expr)

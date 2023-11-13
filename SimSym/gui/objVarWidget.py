@@ -2,8 +2,10 @@ from typing import Any
 
 from ipywidgets import HBox, HTMLMath, Layout, Tab
 
-from ..model import Obj
+from ..exception import ObjAlreadyDefinedException
+from ..model import Obj, VariableHolder
 from ..unit import ExprWithUnit
+from ..utility import alert_exception
 
 
 class ObjVarShowWidget(HBox):  # type: ignore
@@ -23,18 +25,23 @@ class ObjVarShowWidget(HBox):  # type: ignore
 
 
 class ObjVarWidget(Tab):  # type: ignore
-  objs: list[Obj]
+  objs: dict[str, Obj]
+  variableHolder: VariableHolder
   children: tuple[ObjVarShowWidget, ...]
 
-  def __init__(self, **kwargs: dict[str, Any]) -> None:
-    self.objs = []
+  def __init__(self, variableHolder: VariableHolder, **kwargs: dict[str, Any]) -> None:
+    self.variableHolder = variableHolder
+    self.objs = {}
     self.children = tuple()
     super().__init__(self.children, layout=Layout(width='95%'), **kwargs)
 
   def add_object(self, obj: Obj) -> None:
-    if obj in self.objs:
-      raise ValueError(f'Object {obj.name} already exists.')
-    self.objs.append(obj)
+    self.objs[obj.name] = obj
     tab = ObjVarShowWidget(obj, layout=Layout(width='100%'))
     self.children += (tab,)
     self.set_title(len(self.children) - 1, obj.name)
+
+  def add_object_by_name(self, name: str) -> None:
+    if name in self.objs.keys():
+      alert_exception(ObjAlreadyDefinedException(name))
+    self.add_object(Obj(name, self.variableHolder))

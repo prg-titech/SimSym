@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from ..exception import VarAlreadyDefinedException, VarNotDefinedException
 from ..unit import ExprWithUnit
-from ..utility import alert
+from ..utility import alert_exception
 
 
 class VariableHolder:
@@ -15,12 +16,10 @@ class VariableHolder:
 
   def add(self, variable: ExprWithUnit) -> None:
     if variable.to_key in self.variables.keys():
-      alert(f"変数 {variable} はすでに存在します。")
-      raise ValueError(f'Variable {variable} already exists.')
+      alert_exception(VarAlreadyDefinedException(variable.to_key))
     self.variables[variable.to_key] = variable
 
   def get(self, name: str) -> ExprWithUnit:
     if name not in self.variables.keys():
-      alert(f"変数 {name} は存在しません。")
-      raise ValueError(f'Variable {name} does not exist.')
+      alert_exception(VarNotDefinedException(name))
     return self.variables[name]
