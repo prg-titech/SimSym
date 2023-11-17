@@ -91,3 +91,8 @@ class TestExprWithUnit(unittest.TestCase):
     self.assertEqual(b.convert_to_base(), ExprWithUnit('b', 'm') / 1000)
     self.assertEqual((a / b)._repr_latex_(), '\\frac{1000 a}{b}~[1]')
     self.assertEqual((a / b * b)._repr_latex_(), 'a~[\\text{m}]')
+
+  def test_dimensionless(self) -> None:
+    a = ExprWithUnit('a', '1')
+    a2 = ExprWithUnit('a', 's/s')
+    self.assertEqual(a, a2)

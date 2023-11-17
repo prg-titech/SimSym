@@ -1,4 +1,6 @@
-from typing import Callable
+from typing import Any
+
+from .objVarWidget import ObjVarWidget
 
 from ipywidgets import Button, HBox, Layout, Text
 
@@ -11,8 +13,11 @@ class ObjGenerateWidget(HBox):  # type: ignore
     self.button = button
     super().__init__(children=[text_input, button])
 
-  def set_callback(self, callback: Callable[[str], None]) -> None:
-    self.button.on_click(lambda _: callback(self.text_input.value))
+  def set_callback(self, obj_var_widget: ObjVarWidget) -> None:
+    def callback(_: Any) -> None:
+      obj_var_widget.add_object_by_name(self.text_input.value)
+      self.clear()
+    self.button.on_click(callback)
 
   def clear(self) -> None:
     self.text_input.value = ''

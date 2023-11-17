@@ -31,10 +31,7 @@ class DefinePane(Tab):  # type: ignore
     self.global_var_widget = global_var_widget or GlobalVarWidget(self.variable_holder)
     self.equation_widget = equation_widget or EquationWidget(self.equation_holder)
 
-    def callback(arg: str) -> None:
-      self.obj_var_widget.add_object_by_name(arg)
-      self.obj_generate_widget.clear()
-    self.obj_generate_widget.set_callback(callback)
+    self.obj_generate_widget.set_callback(self.obj_var_widget)
 
     super().__init__(
         children=[VBox([

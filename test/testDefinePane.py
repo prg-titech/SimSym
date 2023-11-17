@@ -35,9 +35,9 @@ class TestDefinePane(unittest.TestCase):
     with self.assertRaises(EmptyException):
       obj_var_widget.add_object_by_name('')
 
-    obj_var_widget.children[0].add(ExprWithUnit('a_A', 'm/s^2'))
+    obj_var_widget.children[0].children[0].add(ExprWithUnit('a_A', 'm/s^2'))
     with self.assertRaises(VarAlreadyDefinedException):
-      obj_var_widget.children[0].add(ExprWithUnit('a_A', 'm/s^2'))
+      obj_var_widget.children[0].children[0].add(ExprWithUnit('a_A', 'm/s^2'))
 
     global_var_widget.add(ExprWithUnit('a', 'm/s/s'))
     with self.assertRaises(VarAlreadyDefinedException):
@@ -46,3 +46,7 @@ class TestDefinePane(unittest.TestCase):
     equation_widget.add(EqWithUnit(ExprWithUnit('x', 'm'), ExprWithUnit('y', 'm')))
     with self.assertRaises(ValueError):
       equation_widget.add(EqWithUnit(ExprWithUnit('x', 'm'), ExprWithUnit('y', 'm')))
+
+    obj_var_widget.children[0].children[1].text_input.value = 'b'
+    obj_var_widget.children[0].children[1].unit_input.value = 'm/s^2'
+    obj_var_widget.children[0].children[1].button.click()

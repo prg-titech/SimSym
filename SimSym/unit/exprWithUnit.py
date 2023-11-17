@@ -59,10 +59,13 @@ class PQ:
     elif isinstance(pq, PhysicalQuantity):
       self.pq = pq
     elif isinstance(pq, str):
-      try:
-        self.pq = PhysicalQuantity(1, pq)
-      except UnitError as e:
-        raise e
+      if pq == '1':
+        self.pq = PhysicalQuantity(1, 'm/m')
+      else:
+        try:
+          self.pq = PhysicalQuantity(1, pq)
+        except UnitError as e:
+          raise e
     else:
       self.pq = 1
 
