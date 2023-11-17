@@ -50,3 +50,7 @@ class TestDefinePane(unittest.TestCase):
     obj_var_widget.children[0].children[1].text_input.value = 'b'
     obj_var_widget.children[0].children[1].unit_input.value = 'm/s^2'
     obj_var_widget.children[0].children[1].button.click()
+
+    global_var_widget.children[0].children[1].text_input.value = 'c'
+    global_var_widget.children[0].children[1].unit_input.value = 'm/s/s'
+    global_var_widget.children[0].children[1].button.click()

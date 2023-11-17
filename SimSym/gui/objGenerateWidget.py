@@ -1,8 +1,8 @@
 from typing import Any
 
-from .objVarWidget import ObjVarWidget
-
 from ipywidgets import Button, HBox, Layout, Text
+
+from .objVarWidget import ObjVarWidget
 
 
 class ObjGenerateWidget(HBox):  # type: ignore

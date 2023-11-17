@@ -1,6 +1,6 @@
 from typing import Any
 
-from ipywidgets import HBox, HTMLMath, Layout, Tab, Text, Button, VBox
+from ipywidgets import Button, HBox, HTMLMath, Layout, Tab, Text, VBox
 
 from ..exception import EmptyException, ObjAlreadyDefinedException
 from ..model import Obj, VariableHolder
