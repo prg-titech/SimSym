@@ -152,8 +152,11 @@ class ExprWithUnit:
       return False
 
   def __add__(self, other: ExprWithUnit) -> ExprWithUnit:
-    factor = other.factor_to(self)
-    return ExprWithUnit(self.expr + other.expr * factor, self.pq)
+    try:
+      factor = other.factor_to(self)
+      return ExprWithUnit(self.expr + other.expr * factor, self.pq)
+    except UnitError:
+      raise UnitError(f'{str(self)} と {str(other)} は単位が違うため加算できません。')
 
   def __sub__(self, other: ExprWithUnit) -> ExprWithUnit:
     factor = other.factor_to(self)
