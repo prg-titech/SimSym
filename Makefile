@@ -50,6 +50,16 @@ checkc:  ## format と lint と test を全て実行し、カバレッジを表�
 	@make test
 	@make coverage
 
+.PHONY: commit
+commit: ## チェックをかけてからコミットする コミットメッセージは `M="foo"` と指定する
+	@make check
+	@git add .
+ifeq ($(M),)
+	@git commit
+else
+	@git commit -m $(M)
+endif
+
 .PHONY: status-main
 status-main:
 	@echo "[本体]"
