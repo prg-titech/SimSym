@@ -20,12 +20,12 @@ class TestPQ(unittest.TestCase):
     a = PQ('m')
     c = a * 2.0
     self.assertEqual(str(c), '[m]')
-    self.assertEqual(repr(c), 'PQ(m)')
+    self.assertEqual(repr(c), 'PQ(\'m\')')
     self.assertEqual(c._repr_latex_(), '[\\text{m}]')
 
   def test_truediv_to_any(self) -> None:
     a = PQ('m')
     c = a / 2.0
     self.assertEqual(str(c), '[m]')
-    self.assertEqual(repr(c), 'PQ(m)')
+    self.assertEqual(repr(c), 'PQ(\'m\')')
     self.assertEqual(c._repr_latex_(), '[\\text{m}]')

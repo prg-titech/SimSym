@@ -7,7 +7,7 @@ from PhysicalQuantities.unit import PhysicalUnit, UnitError
 from sympy import Symbol, latex
 from sympy.core.expr import Expr
 
-from ..utility import nsimplify
+from ..utility.nsimplify import nsimplify
 
 
 # PhysicalUnit の _repr_latex_ を上書きする
@@ -77,7 +77,7 @@ class PQ:
 
   def __repr__(self) -> str:
     if isinstance(self.pq, PhysicalQuantity):
-      return f'PQ({str(self.pq.unit)})'
+      return f'PQ(\'{str(self.pq.unit)}\')'
     else:
       return 'PQ(1)'
 
@@ -129,7 +129,7 @@ class ExprWithUnit:
     return str(nsimplify(self.expr))
 
   def __repr__(self) -> str:
-    return f'ExprWithUnit({str(nsimplify(self.expr))}, {repr(self.pq)})'
+    return f'ExprWithUnit(\'{str(nsimplify(self.expr))}\', {repr(self.pq)})'
 
   def _repr_latex_(self) -> str:
     """

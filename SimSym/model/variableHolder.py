@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from ..exception import VarAlreadyDefinedException, VarNotDefinedException
-from ..unit import ExprWithUnit
+from ..unit.exprWithUnit import ExprWithUnit
 from ..utility import alert_exception
 
 

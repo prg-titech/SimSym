@@ -18,7 +18,7 @@ class TestExprWithUnit(unittest.TestCase):
     b = ExprWithUnit('b', 'm')
     c = a + b
     self.assertEqual(str(c), 'a + b [m]')
-    self.assertEqual(repr(c), 'ExprWithUnit(a + b, PQ(m))')
+    self.assertEqual(repr(c), 'ExprWithUnit(\'a + b\', PQ(\'m\'))')
     self.assertEqual(c._repr_latex_(), 'a + b~[\\text{m}]')
 
   def test_unit_key_error(self) -> None:
@@ -30,7 +30,7 @@ class TestExprWithUnit(unittest.TestCase):
     b = ExprWithUnit('b', 'm')
     c = a - b
     self.assertEqual(str(c), 'a - b [m]')
-    self.assertEqual(repr(c), 'ExprWithUnit(a - b, PQ(m))')
+    self.assertEqual(repr(c), 'ExprWithUnit(\'a - b\', PQ(\'m\'))')
     self.assertEqual(c._repr_latex_(), 'a - b~[\\text{m}]')
 
   def test_mul(self) -> None:
@@ -38,21 +38,21 @@ class TestExprWithUnit(unittest.TestCase):
     b = ExprWithUnit('b', 'm')
     c = a * b
     self.assertEqual(str(c), 'a*b [m^2]')
-    self.assertEqual(repr(c), 'ExprWithUnit(a*b, PQ(m^2))')
+    self.assertEqual(repr(c), 'ExprWithUnit(\'a*b\', PQ(\'m^2\'))')
     self.assertEqual(c._repr_latex_(), 'a b~[\\text{m}^{2}]')
 
   def test_mul_any(self) -> None:
     a = ExprWithUnit('a', 'm')
     c = a * 2.0
     self.assertEqual(str(c), '2*a [m]')
-    self.assertEqual(repr(c), 'ExprWithUnit(2*a, PQ(m))')
+    self.assertEqual(repr(c), 'ExprWithUnit(\'2*a\', PQ(\'m\'))')
     self.assertEqual(c._repr_latex_(), '2 a~[\\text{m}]')
 
   def test_rmul_any(self) -> None:
     a = ExprWithUnit('a', 'm')
     c = 2 * a
     self.assertEqual(str(c), '2*a [m]')
-    self.assertEqual(repr(c), 'ExprWithUnit(2*a, PQ(m))')
+    self.assertEqual(repr(c), 'ExprWithUnit(\'2*a\', PQ(\'m\'))')
     self.assertEqual(c._repr_latex_(), '2 a~[\\text{m}]')
 
   def test_truediv(self) -> None:
@@ -60,21 +60,21 @@ class TestExprWithUnit(unittest.TestCase):
     b = ExprWithUnit('b', 'm')
     c = a / b
     self.assertEqual(str(c), 'a/b [1]')
-    self.assertEqual(repr(c), 'ExprWithUnit(a/b, PQ(1))')
+    self.assertEqual(repr(c), 'ExprWithUnit(\'a/b\', PQ(1))')
     self.assertEqual(c._repr_latex_(), '\\frac{a}{b}~[1]')
 
   def test_truediv_any(self) -> None:
     a = ExprWithUnit('a', 'm')
     c = a / 2.0
     self.assertEqual(str(c), 'a/2 [m]')
-    self.assertEqual(repr(c), 'ExprWithUnit(a/2, PQ(m))')
+    self.assertEqual(repr(c), 'ExprWithUnit(\'a/2\', PQ(\'m\'))')
     self.assertEqual(c._repr_latex_(), '\\frac{a}{2}~[\\text{m}]')
 
   def test_pow(self) -> None:
     a = ExprWithUnit('a', 'm')
     c = a ** 2
     self.assertEqual(str(c), 'a**2 [m^2]')
-    self.assertEqual(repr(c), 'ExprWithUnit(a**2, PQ(m^2))')
+    self.assertEqual(repr(c), 'ExprWithUnit(\'a**2\', PQ(\'m^2\'))')
     self.assertEqual(c._repr_latex_(), 'a^{2}~[\\text{m}^{2}]')
 
   def test_factor_to(self) -> None:

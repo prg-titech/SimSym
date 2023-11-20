@@ -11,7 +11,9 @@ class TestEqWithUnit(unittest.TestCase):
     b = ExprWithUnit('b', 'm')
     eq = EqWithUnit(a, b)
     self.assertEqual(str(eq), 'a=b[m]')
-    self.assertEqual(repr(eq), 'EqWithUnit(ExprWithUnit(a, PQ(m)), ExprWithUnit(b, PQ(m)))')
+    self.assertEqual(
+        repr(eq),
+        'EqWithUnit(ExprWithUnit(\'a\', PQ(\'m\')), ExprWithUnit(\'b\', PQ(\'m\')))')
     self.assertEqual(eq._repr_latex_(), 'a=b~[\\text{m}]')
 
   def test_definition2(self) -> None:
@@ -21,7 +23,7 @@ class TestEqWithUnit(unittest.TestCase):
       EqWithUnit(a, b)
     self.assertEqual(
         repr(EqWithUnit(a, b * b)),
-        'EqWithUnit(ExprWithUnit(a, PQ(m^2)), ExprWithUnit(b**2, PQ(m^2)))'
+        'EqWithUnit(ExprWithUnit(\'a\', PQ(\'m^2\')), ExprWithUnit(\'b**2\', PQ(\'m^2\')))'
     )
 
   def test_eq(self) -> None:
