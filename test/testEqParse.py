@@ -1,8 +1,6 @@
 import unittest
-from SimSym.exception.exception import IllegalEquationException
 
 from SimSym.gui import DefinePane
-from SimSym.utility.alert import alert_exception
 
 
 class TestEqParse(unittest.TestCase):
