@@ -47,16 +47,14 @@ class GlobalVarWidget(Tab):  # type: ignore
     self.add(ExprWithUnit('t', 's'))
     self.add(ExprWithUnit('g', 'm/s/s'))
 
-    self.add_callback()
-
   def add(self, expr: ExprWithUnit) -> None:
     self.variable_holder.add(expr)
     self.vars.append(expr)
     self.show_widget.add(expr)
 
-  def add_callback(self) -> None:
+  def set_callback(self) -> None:
     def callback(_: Any) -> None:
-      self.show_widget.add(
+      self.add(
           ExprWithUnit(
               self.add_widget.text_input.value,
               self.add_widget.unit_input.value))

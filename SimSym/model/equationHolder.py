@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from ..unit import EqWithUnit
-from ..utility import alert_exception
 
 
 class EquationHolder:
@@ -16,5 +15,5 @@ class EquationHolder:
 
   def add(self, eq: EqWithUnit) -> None:
     if str(eq) in self.equations.keys():
-      alert_exception(ValueError(f'関係式 {eq} はすでに存在します。'))
+      raise ValueError(f'関係式 {eq} はすでに存在します。')
     self.equations[str(eq)] = eq

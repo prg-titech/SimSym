@@ -34,8 +34,8 @@ def generate_init_variables(name: str) -> dict[str, ExprWithUnit]:
   variables[str(x)] = x
   y = ExprWithUnit(f'y_{name}', 'm')
   variables[str(y)] = y
-  v_x = ExprWithUnit(f'v_{{{name}x}}', 'm/s')
+  v_x = ExprWithUnit(f'v_{name}x', 'm/s')
   variables[str(v_x)] = v_x
-  v_y = ExprWithUnit(f'v_{{{name}y}}', 'm/s')
+  v_y = ExprWithUnit(f'v_{name}y', 'm/s')
   variables[str(v_y)] = v_y
   return variables

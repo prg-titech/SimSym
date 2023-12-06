@@ -32,3 +32,12 @@ class EmptyException(Exception):
 
   def __init__(self, name: str) -> None:
     super().__init__(f'{name}が空です。')
+
+
+class IllegalEquationException(Exception):
+  """
+  関係式には等号を一つだけ含めてください。
+  """
+
+  def __init__(self) -> None:
+    super().__init__('関係式には等号を一つだけ含めてください。')
