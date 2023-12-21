@@ -27,6 +27,13 @@ table {float:left}
 '''))  # type: ignore
 
 
+# matplotlib を widget モードにする
+try:
+  get_ipython().run_line_magic('matplotlib', 'widget')  # type: ignore
+except NameError:
+  pass
+
+
 __all__ = [
     'Main',
     'DefinePane',
